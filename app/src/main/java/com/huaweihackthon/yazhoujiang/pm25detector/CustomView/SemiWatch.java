@@ -74,7 +74,7 @@ public class SemiWatch extends View {
 
         canvas.drawArc(getPaddingLeft(), getPaddingTop(), getMeasuredWidth()-getPaddingRight(), getMeasuredHeight(), 180,degree,false, mPaint);
         //draw circle
-        canvas.drawCircle(getMeasuredWidth() / 2, getMeasuredHeight() / 2, 10, mPaintCircle);
+        //canvas.drawCircle(getMeasuredWidth() / 2, getMeasuredHeight() / 2, 10, mPaintCircle);
 
     }
 

@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SemiWatch mSemiWatch;
 
-    private Pointer mPointer;
+    //private Pointer mPointer;
 
     private TextView mTextClock;
 
@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSemiWatch = (SemiWatch) findViewById(R.id.semi_watch);
-        mPointer = (Pointer) findViewById(R.id.pointer_view);
+        //mPointer = (Pointer) findViewById(R.id.pointer_view);
         mTextClock = (TextView) findViewById(R.id.text_clock);
-        mSemiWatch.setSweepAngle(converToDegree(500));
+        mSemiWatch.setSweepAngle(converToDegree(0));
         if (Build.VERSION.SDK_INT >= 23) {
             colorPrimary = Color.red(getResources().getColor(R.color.colorPrimary, null));
             colorPrimaryDark = Color.red(getResources().getColor(R.color.colorPrimaryDark, null));
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private void upDateView(float number) {
         float degree = converToDegree(number);
 
-        mPointer.rotate(degree);
+        //mPointer.rotate(degree);
         mTextClock.setText("PM 2.5: " + number);
 
         mSemiWatch.setSweepAngle(degree);
@@ -130,14 +130,6 @@ public class MainActivity extends AppCompatActivity {
 
         int calculatedColor = (int) (number / 1000) * base + base;
         int calculatedColorDark = (int) (number / 1000) * baseDark + baseDark;
-
-        //getWindow().setStatusBarColor(Color.rgb(Color.red(calculatedColorDark),Color.green(calculatedColorDark),Color.blue(calculatedColorDark)));
-        ActionBar bar = getSupportActionBar();
-        if (bar != null) {
-            //Log.d("action", "action");
-            //ColorDrawable colorDrawable = new ColorDrawable(Color.rgb(Color.red(calculatedColor),Color.green(calculatedColor),Color.blue(calculatedColor)));
-            //bar.setBackgroundDrawable(colorDrawable);
-        }
 
 
 

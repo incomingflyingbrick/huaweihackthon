@@ -14,19 +14,19 @@
         android:layout_height="300dp"
         android:padding="5dp"
         android:layout_centerInParent="true"/>
-    <com.huaweihackthon.yazhoujiang.pm25detector.CustomView.Pointer
-        android:id="@+id/pointer_view"
-        android:layout_width="5dp"
-        android:layout_height="140dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_alignTop="@+id/semi_watch"
-        />
+    <!--<com.huaweihackthon.yazhoujiang.pm25detector.CustomView.Pointer-->
+        <!--android:id="@+id/pointer_view"-->
+        <!--android:layout_width="5dp"-->
+        <!--android:layout_height="140dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_alignTop="@+id/semi_watch"-->
+        <!--/>-->
 
     <TextView
         android:id="@+id/text_clock"
-        android:layout_below="@+id/pointer_view"
-        android:layout_marginTop="50dp"
+        android:layout_alignTop="@+id/semi_watch"
+        android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
