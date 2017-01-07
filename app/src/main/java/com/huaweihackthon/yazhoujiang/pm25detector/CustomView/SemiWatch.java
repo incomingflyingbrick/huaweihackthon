@@ -61,13 +61,13 @@ public class SemiWatch extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
-        Log.d("view", "measuring semi watch");
+        //Log.d("view", "measuring semi watch");
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.d("view", "drawing semi watch" + getLeft() + " " + getTop() + " " + getRight() + " " + getBottom() + " x:" + getX() + " y:" + getY());
+        //Log.d("view", "drawing semi watch" + getLeft() + " " + getTop() + " " + getRight() + " " + getBottom() + " x:" + getX() + " y:" + getY());
         // draw arc
         int height = getMeasuredHeight();
         int width = getMeasuredWidth();

@@ -1,34 +1,35 @@
 package com.huaweihackthon.yazhoujiang.pm25detector;
 
-import android.animation.ArgbEvaluator;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.ColorRes;
-import android.support.annotation.IntegerRes;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.style.TtsSpan;
 import android.util.Log;
-import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.huaweihackthon.yazhoujiang.pm25detector.CustomView.Pointer;
 import com.huaweihackthon.yazhoujiang.pm25detector.CustomView.SemiWatch;
+import com.huaweihackthon.yazhoujiang.pm25detector.CustomView.SocketStart;
 
 public class MainActivity extends AppCompatActivity {
 
     private SemiWatch mSemiWatch;
+
     private Pointer mPointer;
+
     private TextView mTextClock;
-    private Handler mHandler = new Handler();
+
     private int colorPrimary = 0;
+
     private int colorPrimaryDark = 0;
+
+    private Thread mThread;
+
+    private MyHandler h = new MyHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +46,30 @@ public class MainActivity extends AppCompatActivity {
             colorPrimary = Color.red(getResources().getColor(R.color.colorPrimary));
             colorPrimaryDark = Color.red(getResources().getColor(R.color.colorPrimaryDark));
         }
+
+
+
     }
+
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        MyTask myTask = new MyTask();
-        myTask.execute(0);
+//        MyTask myTask = new MyTask();
+//        myTask.execute(0);
+
+        mThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SocketStart socketService = SocketStart.getInstance();
+                socketService.mHandler = h;
+                socketService.RunServer();
+                Log.d("socket","socket is running");
+            }
+        });
+        mThread.start();
+
     }
 
     private class MyTask extends AsyncTask<Integer, Integer, Integer> {
@@ -64,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(Integer... params) {
             for (int i = 0; i <= 1000; i++) {
-                Log.d("data", "Data:" + i);
+                //Log.d("data", "Data:" + i);
                 publishProgress(i);
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
-                    Log.d("data", e.getMessage());
+                  //  Log.d("data", e.getMessage());
                 }
                 if (i == 1000) {
                     i = 0;
@@ -95,13 +113,16 @@ public class MainActivity extends AppCompatActivity {
             number = rawRate * 180f;
 
         }
-        Log.d("rate", number + " degrees");
+       // Log.d("rate", number + " degrees");
         return number;
     }
 
     private void upDateView(float number) {
-        mTextClock.setText("PM 2.5: " + number);
         float degree = converToDegree(number);
+
+        mPointer.rotate(degree);
+        mTextClock.setText("PM 2.5: " + number);
+
         mSemiWatch.setSweepAngle(degree);
 
         int base = 255 - Color.red(colorPrimary);
@@ -113,12 +134,21 @@ public class MainActivity extends AppCompatActivity {
         //getWindow().setStatusBarColor(Color.rgb(Color.red(calculatedColorDark),Color.green(calculatedColorDark),Color.blue(calculatedColorDark)));
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
-            Log.d("action", "action");
+            //Log.d("action", "action");
             //ColorDrawable colorDrawable = new ColorDrawable(Color.rgb(Color.red(calculatedColor),Color.green(calculatedColor),Color.blue(calculatedColor)));
             //bar.setBackgroundDrawable(colorDrawable);
         }
-        RotateAnimation animation = (RotateAnimation) AnimationUtils.loadAnimation(MainActivity.this, R.anim.rotate);
-        mPointer.startAnimation(animation);
+
+
+
+    }
+
+    private class MyHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            upDateView(msg.getData().getFloat("data",0));
+        }
     }
 
 

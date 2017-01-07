@@ -15,6 +15,7 @@ import com.huaweihackthon.yazhoujiang.pm25detector.DpUtil;
 
 public class Pointer extends View {
     private Paint mPaint = new Paint();
+    private float degree = 0;
 
     public Pointer(Context context) {
         super(context);
@@ -45,6 +46,15 @@ public class Pointer extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        //
+        //canvas.rotate(degree,canvas.getWidth()/2,canvas.getHeight()-1);
         canvas.drawRoundRect(0,0,getMeasuredWidth(),getMeasuredHeight(), DpUtil.dpToPix(getContext(),5),DpUtil.dpToPix(getContext(),5),mPaint);
+        //canvas.restore();
+    }
+
+    public void rotate(float degree){
+        this.degree = degree;
+        invalidate();
+        requestLayout();
     }
 }
