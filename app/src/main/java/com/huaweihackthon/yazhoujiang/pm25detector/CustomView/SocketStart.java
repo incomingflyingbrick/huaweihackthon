@@ -3,6 +3,8 @@ package com.huaweihackthon.yazhoujiang.pm25detector.CustomView;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.*;
@@ -28,53 +30,28 @@ public class SocketStart {
     }
 
     public void RunServer() {
+
+        ServerSocket server = null;
         try {
-            ServerSocket server = null;
-            try {
-                server = new ServerSocket();
-                String hostname = getIPAddress(true);
-                server.bind(new InetSocketAddress(hostname, 65535));
-                Log.d("socket", server.toString());
-            } catch (Exception e) {
-                Log.d("error", e.getMessage());
-            }
+
+            server = new ServerSocket();
+            String hostname = getIPAddress(true);
+            server.bind(new InetSocketAddress(hostname, 65535));
+        } catch (IOException e) {
+        }
+        while (true) {
+
             Socket socket = null;
             try {
                 socket = server.accept();
-
+                Log.d("new socket",socket.toString());
+                MsgThread mgThread = new MsgThread(socket, mHandler);
+                Log.d("new thread",mgThread.toString());
+                mgThread.start();
             } catch (Exception e) {
                 System.out.println("Error." + e);
             }
 
-            String line;
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            PrintWriter writer = new PrintWriter(socket.getOutputStream());
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-            System.out.println("Client:" + in.readLine());
-
-
-            while (null != in.readLine()) {
-                String dataString = in.readLine();
-                float data = Float.parseFloat(dataString);
-                Message msg = Message.obtain();
-                msg.getData().putFloat("data", data);
-                if (mHandler != null) {
-                    if (data >= 0 && data <= 100) {
-                        Log.d("msg",data+" for post");
-                        mHandler.sendMessage(msg);
-                    }
-                }
-            }
-
-            writer.close();
-            in.close();
-            socket.close();
-            server.close();
-        } catch (Exception e) {
-            System.out.println("Error." + e);
         }
     }
 
