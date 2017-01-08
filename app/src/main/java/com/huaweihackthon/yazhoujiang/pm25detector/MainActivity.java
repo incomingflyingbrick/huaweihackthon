@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (plot.isShown()) {
-                    plot.setVisibility(View.GONE);
+                    plot.setVisibility(View.INVISIBLE);
                 } else {
                     plot.setVisibility(View.VISIBLE);
                     doPlot();
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     private void doPlot() {
 
         XYSeries series1 = new SimpleXYSeries(
-                mDataArray, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "历史数据");
+                mDataArray, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "PM 2.5 历史数据");
 
         LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.RED, Color.GREEN, null, null);
         // add a new series' to the xyplot:
@@ -119,14 +119,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-                int i = Math.round(((Number) obj).floatValue());
                 Date date = null;
                 if (counter < mDataTimeArray.size()) {
                     date = new Date(mDataTimeArray.get(counter).longValue());
                 }
+                if (date!=null) {
+                    toAppendTo.append(date.getMinutes() + ":" + date.getSeconds());
+                    counter++;
+                }
 
-                toAppendTo.append(date.getMinutes() + ":" + date.getSeconds());
-                counter++;
                 return toAppendTo;
             }
 
