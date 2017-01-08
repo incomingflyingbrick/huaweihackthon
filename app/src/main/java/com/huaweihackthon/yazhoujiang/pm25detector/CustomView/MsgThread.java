@@ -32,7 +32,7 @@ public class MsgThread extends Thread {
             BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             String line = null;
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
+                Log.d("receiver",line);
                 float data = Float.parseFloat(line);
                 Message msg = Message.obtain();
                 msg.arg1 = (int) data;
