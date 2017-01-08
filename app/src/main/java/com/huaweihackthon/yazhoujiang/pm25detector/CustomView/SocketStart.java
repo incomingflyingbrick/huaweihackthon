@@ -36,7 +36,7 @@ public class SocketStart {
 
             server = new ServerSocket();
             String hostname = getIPAddress(true);
-            server.bind(new InetSocketAddress(hostname, 65535));
+            server.bind(new InetSocketAddress(hostname, 65534));
         } catch (IOException e) {
         }
         while (true) {
@@ -44,12 +44,12 @@ public class SocketStart {
             Socket socket = null;
             try {
                 socket = server.accept();
-                Log.d("new socket",socket.toString());
+                Log.d("new",socket.toString());
                 MsgThread mgThread = new MsgThread(socket, mHandler);
-                Log.d("new thread",mgThread.toString());
+                Log.d("new",mgThread.toString());
                 mgThread.start();
             } catch (Exception e) {
-                System.out.println("Error." + e);
+                //System.out.println("Error." + e);
             }
 
         }
