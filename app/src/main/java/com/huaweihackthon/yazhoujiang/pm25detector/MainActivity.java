@@ -176,8 +176,12 @@ public class MainActivity extends AppCompatActivity {
     private void upDateView(float number, final long time) {
 
         float degree = converToDegree(number);
-        mDataTimeArray.add(time);
-        mDataArray.add((int) number);
+        if (number >= 0 && number <= 1000) {
+            mDataTimeArray.add(time);
+            mDataArray.add((int) number);
+        }
+
+
         //mPointer.rotate(degree);
         mTextClock.setText("PM 2.5: " + number);
 
